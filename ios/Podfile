@@ -1,0 +1,35 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'CoinLottoNewTest' do
+  # Comment the next line if you don't want to use dynamic frameworks
+ # use_frameworks!
+
+  # Pods for CoinLottoNewTest
+
+pod 'Firebase/Core'
+pod 'GoogleIDFASupport', '~> 3.14.0'
+
+
+
+
+
+  target 'CoinLottoNewTestTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+target 'CoinLottoNewTest-tvOS' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for CoinLottoNewTest-tvOS
+
+  target 'CoinLottoNewTest-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
