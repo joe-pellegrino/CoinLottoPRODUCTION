@@ -1,4 +1,12 @@
-import { Text, SafeAreaView, ScrollView, TouchableOpacity } from "react-native";
+import {
+  Text,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+  Animated,
+  Easing,
+  Button
+} from "react-native";
 import React from "react";
 import styled from "styled-components";
 import Card from "../components/Card";
@@ -42,6 +50,8 @@ export default class HomeScreen extends React.Component {
               </TouchableOpacity>
             ))}
           </ScrollView>
+
+          <SettingsButton title="Settings" />
         </SafeAreaView>
         {/* <ModalLogin /> */}
       </Container>
@@ -77,9 +87,15 @@ const cards = [
   }
 ];
 
-const Container = styled.View`
-  background: #f0f3f5;
+const RootView = styled.View`
+  background: black;
   flex: 1;
+`;
+
+const Container = styled.View`
+  flex: 1;
+  background-color: #f0f3f5;
+  border-radius: 10px;
 `;
 
 const TitleBar = styled.View`
@@ -98,4 +114,8 @@ const Name = styled.Text`
   font-size: 20px;
   color: #3c4560;
   font-weight: bold;
+`;
+
+const SettingsButton = styled.Button`
+  right: 0;
 `;

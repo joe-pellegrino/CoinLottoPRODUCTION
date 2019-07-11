@@ -6,7 +6,7 @@ import FreeLottoDrawingLive from "../screens/FreeLottoDrawingLive";
 const AppNavigator = createStackNavigator(
   {
     HomeScreen: HomeScreen,
-    LottoDetail: LottoDetail,
+    //LottoDetail: LottoDetail,
     FreeLottoDrawingLive: FreeLottoDrawingLive
   },
   {

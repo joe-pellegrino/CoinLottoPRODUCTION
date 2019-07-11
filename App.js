@@ -2,11 +2,34 @@ import React, { Component } from "react";
 import { AsyncStorage, Alert } from "react-native";
 import firebase from "react-native-firebase";
 import AppNavigator from "./navigator/AppNavigator";
+import NavigationService from "./navigator/NavigationService";
+
+// import { createStore } from "redux";
+// import { Provider } from "react-redux";
+
+// const initialState = {
+//   action: "openNewDrawing"
+// };
+
+// const reducer = (state = initialState, action) => {
+//   switch (action.type) {
+//     case "OPEN_NEW_DRAWING":
+//       return { action: "openNewDrawing" };
+//     case "CLOSE_NEW_DRAWING":
+//       return { action: "closeNewDrawing" };
+//     default:
+//       return state;
+//   }
+// };
+
+// const store = createStore(reducer);
 
 export default class App extends Component {
   async componentDidMount() {
     this.checkPermission();
     this.createNotificationListeners();
+
+    // NavigationService.navigate("FreeLottoDrawingLive", { userName: "Lucy" });
   }
 
   componentWillUnmount() {
@@ -21,8 +44,18 @@ export default class App extends Component {
     this.notificationListener = firebase
       .notifications()
       .onNotification(notification => {
-        const { title, body } = notification;
-        this.showAlert(title, body);
+        const { title, body, data } = notification;
+        // this.AppNavigator.dispatch(
+        //   NavigationActions.navigate({
+        //     routeName: "somescreen",
+        //     params: someParams
+        //   })
+        // );
+
+        if (data.screen == "live") {
+          //this.showAlert(title, "Lets show the live screen");
+          this.goToLiveScreen();
+        }
       });
 
     /*
@@ -31,8 +64,12 @@ export default class App extends Component {
     this.notificationOpenedListener = firebase
       .notifications()
       .onNotificationOpened(notificationOpen => {
-        const { title, body } = notificationOpen.notification;
-        this.showAlert(title, body);
+        const { title, body, data } = notificationOpen.notification;
+        //this.showAlert(title, body);
+        if (data.screen == "live") {
+          //this.showAlert(title, "Lets show the live screen");
+          this.goToLiveScreen();
+        }
       });
 
     /*
@@ -42,8 +79,12 @@ export default class App extends Component {
       .notifications()
       .getInitialNotification();
     if (notificationOpen) {
-      const { title, body } = notificationOpen.notification;
-      this.showAlert(title, body);
+      const { title, body, data } = notificationOpen.notification;
+      if (data.screen == "live") {
+        //this.showAlert(title, "Lets show the live screen");
+        this.goToLiveScreen();
+      }
+      //this.showAlert(title, body);
     }
     /*
      * Triggered for data only payload in foreground
@@ -52,6 +93,10 @@ export default class App extends Component {
       //process data message
       console.log(JSON.stringify(message));
     });
+  }
+
+  goToLiveScreen() {
+    NavigationService.navigate("FreeLottoDrawingLive", { userName: "Lucy" });
   }
 
   showAlert(title, body) {
@@ -98,6 +143,17 @@ export default class App extends Component {
   }
 
   render() {
-    return <AppNavigator />;
+    return (
+      //<Provider store={store}>
+      <AppNavigator
+        ref={navigatorRef => {
+          NavigationService.setTopLevelNavigator(navigatorRef);
+        }}
+        // ref={nav => {
+        //   this.navigator = nav;
+        // }}
+      />
+      //</Provider>
+    );
   }
 }
