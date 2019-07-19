@@ -38,7 +38,7 @@ export default class HomeScreen extends React.Component {
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  this.props.navigation.push("FreeLottoDrawingLive");
+                  this.props.navigation.push(card.screen);
                 }}
               >
                 <Card
@@ -52,6 +52,12 @@ export default class HomeScreen extends React.Component {
           </ScrollView>
 
           <SettingsButton title="Settings" />
+          <Button
+            onPress={() => {
+              this.props.navigation.push("Login");
+            }}
+            title="Login"
+          />
         </SafeAreaView>
         {/* <ModalLogin /> */}
       </Container>
@@ -63,27 +69,32 @@ const cards = [
   {
     image: require("../assets/free.png"),
     caption: "Next Drawing",
-    countdownUntil: 100
+    countdownUntil: 100,
+    screen: "FreeLottoHome"
   },
   {
     image: require("../assets/moonball.png"),
     caption: "Next Drawing",
-    countdownUntil: 1000
+    countdownUntil: 1000,
+    screen: "Login"
   },
   {
     image: require("../assets/jackpot.png"),
     caption: "Next Drawing",
-    countdownUntil: 500
+    countdownUntil: 500,
+    screen: "FreeLottoHome"
   },
   {
     image: require("../assets/fastball.png"),
     caption: "Next Drawing",
-    countdownUntil: 1100
+    countdownUntil: 1100,
+    screen: "FreeLottoHome"
   },
   {
     image: require("../assets/paintball.png"),
     caption: "Next Drawing",
-    countdownUntil: 600
+    countdownUntil: 600,
+    screen: "FreeLottoHome"
   }
 ];
 
