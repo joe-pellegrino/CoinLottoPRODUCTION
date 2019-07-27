@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   Animated,
   Easing,
-  Button
+  Button,
+  AsyncStorage
 } from "react-native";
 import React from "react";
 import styled from "styled-components";
@@ -63,7 +64,31 @@ export default class HomeScreen extends React.Component {
       </Container>
     );
   }
+
+  componentDidMount() {
+    getLoginStatus().then(login => {
+      if (login == null) {
+        this.props.navigation.push("Login");
+      }
+    });
+    // if (getLoginStatus() == null) {
+    //   this.props.navigation.push("Login");
+    // } else {
+    //   alert("login status " + getLoginStatus().value);
+    // }
+  }
 }
+
+const getLoginStatus = async () => {
+  var login = "false";
+  try {
+    login = await AsyncStorage.getItem("login");
+  } catch (error) {
+    // Error retrieving data
+    console.log(error.message);
+  }
+  return login;
+};
 
 const cards = [
   {
