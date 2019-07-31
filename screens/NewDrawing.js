@@ -1,106 +1,120 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Animated, TouchableOpacity, Button, Dimensions } from "react-native";
-import { connect } from "react-redux";
+import WebView from "react-native-webview";
+import firebase from "react-native-firebase";
+import { ScrollView, TouchableOpacity, View, Text } from "react-native";
+import Ball from "../components/Ball";
 
-const AnimatedContainer = Animated.createAnimatedComponent(Container);
-const screenHeight = Dimensions.get("window").height;
+let Analytics = firebase.analytics();
 
-function mapDispatchToProps(dispatch) {
-  return {
-    closeNewDrawing: () =>
-      dispatch({
-        type: "CLOSE_NEW_DRAWING"
-      })
-  };
-}
-
-function mapStateToProps(state) {
-  return { action: state.action };
-}
-
-class NewDrawing extends React.Component {
+export default class NewDrawing extends React.Component {
+  constructor() {
+    super();
+    Analytics.setAnalyticsCollectionEnabled(true);
+    firebase.analytics().logEvent("free_lotto", {
+      user: "test"
+    });
+  }
   state = {
-    top: new Animated.Value(screenHeight)
+    number: "0"
   };
-
-  componentDidMount() {
-    this.toggleMenu();
-  }
-
-  componentDidUpdate() {
-    this.toggleMenu();
-  }
-
-  toggleMenu = () => {
-    if (this.props.action == "openNewDrawing") {
-      // Close
-      Animated.spring(this.state.top, {
-        toValue: 54
-      }).start();
-    }
-    if (this.props.action == "closeNewDrawing") {
-      // Close
-      Animated.spring(this.state.top, {
-        toValue: screenHeight
-      }).start();
-    }
-  };
-
   render() {
     return (
-      <AnimatedContainer style={{ top: this.state.top }}>
-        <TouchableOpacity
-          onPress={this.toggleMenu}
-          style={{
-            position: "absolute",
-            top: 120,
-            left: "50%",
-            marginLeft: -22,
-            zIndex: 1
-          }}
+      <Container>
+        <TitleBar>
+          <Title>New Drawing</Title>
+        </TitleBar>
+        <Text>Number: {this.state.number}</Text>
+        <ScrollView
+          //horizontal={false}
+          style={{ paddingBottom: 30 }}
+          //showsHorizontalScrollIndicator={false}
         >
-          <CloseView>
-            <Button title="Close" onPress={this.props.closeMenu}>
-              /
-            </Button>
-            {/* <Icon.Ionicons name="ios-close" size={44} color="#546bfb" /> */}
-          </CloseView>
-        </TouchableOpacity>
-      </AnimatedContainer>
+          {/* {balls.map((ball, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => {
+                this.props.navigation.push("FreeLottoDrawingLive");
+              }}
+            >
+              <Ball key={index} number={ball} />
+            </TouchableOpacity>
+          ))} */}
+          <View
+            style={{
+              alignItems: "center"
+            }}
+          >
+            <BallRow>
+              <Ball
+                number="1"
+                parentFunction={this.numberSelect(this.state.number)}
+              />
+              <Ball number="2" />
+              <Ball number="3" />
+              <Ball number="4" />
+              <Ball number="5" />
+            </BallRow>
+            <BallRow>
+              <Ball number="6" />
+              <Ball number="7" />
+              <Ball number="8" />
+              <Ball number="9" />
+              <Ball number="10" />
+            </BallRow>
+            <BallRow>
+              <Ball number="11" />
+              <Ball number="12" />
+              <Ball number="13" />
+              <Ball number="14" />
+              <Ball number="15" />
+            </BallRow>
+            <BallRow>
+              <Ball number="16" />
+              <Ball number="17" />
+              <Ball number="18" />
+              <Ball number="19" />
+              <Ball number="20" />
+            </BallRow>
+            <BallRow>
+              <Ball number="21" />
+              <Ball number="22" />
+              <Ball number="23" />
+              <Ball number="24" />
+              <Ball number="25" />
+            </BallRow>
+          </View>
+        </ScrollView>
+      </Container>
     );
+  }
+
+  numberSelect(number) {
+    this.setState({ number: number });
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NewDrawing);
-
-const CloseView = styled.View`
-  width: 44px;
-  height: 44px;
-  border-radius: 22px;
-  background: white;
-  justify-content: center;
-  align-items: center;
-`;
-
 const Container = styled.View`
-  position: absolute;
-  background: white;
+  flex: 1;
+`;
+
+const BallRow = styled.View`
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 70%;
+  align-items: center;
+  padding-bottom: 5;
+`;
+
+const Title = styled.Text`
+  font-size: 20px;
+  color: #3c4560;
+  font-weight: bold;
+`;
+
+const TitleBar = styled.View`
   width: 100%;
-  height: 100%;
-  z-index: 100;
-`;
-
-const Cover = styled.View`
-  height: 142px;
-  background: black;
-`;
-
-const Content = styled.View`
-  height: ${screenHeight};
-  background: #f0f3f5;
+  margin-top: 50px;
+  padding-left: 20px;
 `;

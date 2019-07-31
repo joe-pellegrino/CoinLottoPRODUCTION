@@ -11,7 +11,7 @@ export default class FreeLottoHome extends React.Component {
   constructor() {
     super();
     Analytics.setAnalyticsCollectionEnabled(true);
-    firebase.analytics().logEvent("freez_lotto", {
+    firebase.analytics().logEvent("free_lotto", {
       user: "test"
     });
   }
@@ -62,48 +62,48 @@ export default class FreeLottoHome extends React.Component {
   // }
 }
 
-// const rows = [
-//   {
-//     number1: "15",
-//     number2: "25",
-//     number3: "70",
-//     number4: "05",
-//     number5: "14",
-//     power: "25"
-//   },
-//   {
-//     number1: "15",
-//     number2: "25",
-//     number3: "70",
-//     number4: "05",
-//     number5: "14",
-//     power: "25"
-//   },
-//   {
-//     number1: "15",
-//     number2: "25",
-//     number3: "70",
-//     number4: "05",
-//     number5: "14",
-//     power: "25"
-//   },
-//   {
-//     number1: "15",
-//     number2: "25",
-//     number3: "70",
-//     number4: "05",
-//     number5: "14",
-//     power: "25"
-//   },
-//   {
-//     number1: "15",
-//     number2: "25",
-//     number3: "70",
-//     number4: "05",
-//     number5: "14",
-//     power: "25"
-//   }
-// ];
+const rows = [
+  {
+    number1: "15",
+    number2: "25",
+    number3: "70",
+    number4: "05",
+    number5: "14",
+    power: "25"
+  },
+  {
+    number1: "15",
+    number2: "25",
+    number3: "70",
+    number4: "05",
+    number5: "14",
+    power: "25"
+  },
+  {
+    number1: "15",
+    number2: "25",
+    number3: "70",
+    number4: "05",
+    number5: "14",
+    power: "25"
+  },
+  {
+    number1: "15",
+    number2: "25",
+    number3: "70",
+    number4: "05",
+    number5: "14",
+    power: "25"
+  },
+  {
+    number1: "15",
+    number2: "25",
+    number3: "70",
+    number4: "05",
+    number5: "14",
+    power: "25"
+  }
+];
 
 const Container = styled.View`
   flex: 1;

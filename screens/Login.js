@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { Button, Alert } from "react-native";
+import { Button, Alert, AsyncStorage } from "react-native";
 import axios from "axios";
 import Toast, { DURATION } from "react-native-easy-toast";
 import * as Keychain from "react-native-keychain";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ACCESS_CONTROL_OPTIONS = ["None", "Passcode", "Password"];
 const ACCESS_CONTROL_MAP = [
@@ -14,29 +15,161 @@ const ACCESS_CONTROL_MAP = [
 ];
 
 class Login extends React.Component {
+  static navigationOptions = {
+    headerLeft: (
+      <Button
+        //onPress={() => alert("This is a button!")}
+        title=""
+        color="#fff"
+      />
+    )
+  };
   state = {
     error: "No error yet",
     biometryType: "TOUCH_ID",
-    accessControl: null
+    accessControl: null,
+    username: "",
+    token: "",
+    email: "",
+    password: ""
   };
+  // constructor(props) {
+  //   super(props);
+
+  // }
   render() {
     return (
       <Container>
         <Text>{this.state.error}</Text>
-        <TextInput placeholder="Email" />
-        <TextInput placeholder="Password" />
-        <Button onPress={this.login} title="Login" />
-        <Button onPress={() => this.load()} title="Generate Credentials" />
+        <TextInput
+          onChangeText={email => this.setState({ email })}
+          keyboard-type="email-address"
+          placeholder="Email"
+        />
+        <TextInput
+          onChangeText={password => this.setState({ password })}
+          secureTextEntry={true}
+          placeholder="Password"
+        />
+        <TouchableOpacity onPress={this.login}>
+          <ButtonView>
+            <ButtonText>Login</ButtonText>
+          </ButtonView>
+        </TouchableOpacity>
+        {/* <Button onPress={() => this.load()} title="Generate Credentials" /> */}
         <Toast ref="toast" />
       </Container>
     );
   }
 
-  // componentDidMount() {
-  //   Keychain.getSupportedBiometryType().then(biometryType => {
-  //     this.setState({ biometryType });
-  //   });
-  // }
+  _bootstrapAsync = async () => {
+    this.setState({ error: "userToken" });
+    try {
+      const userToken = await AsyncStorage.getItem("login");
+      this.setState({ error: userToken });
+    } catch (err) {
+      this.setState({ error: err });
+    }
+
+    // This will switch to the App screen or Auth screen and this loading
+    // screen will be unmounted and thrown away.
+  };
+
+  _setStorage = async () => {
+    // await AsyncStorage.setItem("username", this.state.username);
+    // await AsyncStorage.setItem("token", this.state.token);
+
+    await Promise.all([
+      this._storeUsername(),
+      this._storeToken(),
+      this._storeLoginStatus(),
+      this._showHomeScreen()
+    ]);
+  };
+
+  _showHomeScreen = async () => {
+    try {
+      await this.props.navigation.push("HomeScreen");
+      this.setState({ error: "Login complete " });
+    } catch (error) {
+      this.setState({ error: "Cant push : " + error });
+      // Error saving data
+    }
+  };
+
+  _storeUsername = async () => {
+    try {
+      await AsyncStorage.setItem("username", this.state.username);
+    } catch (error) {
+      this.setState({ error: "username: " + error });
+      // Error saving data
+    }
+  };
+
+  _storeToken = async () => {
+    try {
+      await AsyncStorage.setItem("token", this.state.token);
+    } catch (error) {
+      this.setState({ error: "token: " + error });
+      // Error saving data
+    }
+  };
+
+  _storeLoginStatus = async () => {
+    try {
+      await AsyncStorage.setItem("login", "true");
+    } catch (error) {
+      // Error retrieving data
+      this.setState({ error: "login: " + error });
+    }
+  };
+
+  componentDidMount() {
+    this._bootstrapAsync();
+    Keychain.getSupportedBiometryType().then(biometryType => {
+      this.setState({ biometryType });
+    });
+  }
+
+  _removeUsername = async () => {
+    try {
+      await AsyncStorage.removeItem("username");
+      this.setState({ error: "Username complete " });
+    } catch (error) {
+      this.setState({ error: "username: " + error });
+      // Error saving data
+    }
+  };
+
+  _removeToken = async () => {
+    try {
+      await AsyncStorage.removeItem("token");
+      this.setState({ error: "Token complete " });
+    } catch (error) {
+      this.setState({ error: "token: " + error });
+      // Error saving data
+    }
+  };
+
+  _removeStatus = async () => {
+    try {
+      await AsyncStorage.removeItem("login");
+      this.setState({ error: "Push to login complete " });
+    } catch (error) {
+      // Error retrieving data
+      this.setState({ error: "login: " + error });
+    }
+  };
+
+  _showLoginScreen = async () => {
+    try {
+      await this.props.navigation.push("Login");
+      this.setState({ error: "Login complete " });
+    } catch (error) {
+      this.setState({ error: "Cant push : " + error });
+      // Error saving data
+    }
+  };
 
   getCreds = () => {
     var thisObj = this;
@@ -148,18 +281,28 @@ class Login extends React.Component {
             var username = response.data.message.username;
             var token = response.data.message.token;
 
-            // thisObj.setState({
-            //   error: "Welcome " + username + " " + token
-            // });
-            saveLoginStatus()
-              .then({})
-              .catch(err => {
-                alert(err);
-              });
+            thisObj.setState({
+              username: username
+            });
+
+            thisObj.setState({
+              token: token
+            });
+
+            thisObj._setStorage();
+
+            // saveLoginStatus()
+            //   .then({
+            //      _storeUsername()
+            //     //_setStates()
+            //   })
+            //   .catch(err => {
+            //     alert(err);
+            //   });
 
             Keychain.setGenericPassword(username, token, {
-              service: "com.rjmedia.coinlotto",
-              accessControl: "BiometryAny"
+              service: "com.rjmedia.coinlotto"
+              //accessControl: "BiometryAny"
             })
               .then({})
               .catch(err => {
@@ -175,20 +318,11 @@ class Login extends React.Component {
         //   isLoading: false
         // });
         thisObj.setState({
-          error: "error at bottom: "
+          error: "error at bottom: " + error
         });
       });
   };
 }
-
-const saveLoginStatus = async () => {
-  try {
-    await AsyncStorage.setItem("login", "true");
-  } catch (error) {
-    // Error retrieving data
-    console.log(error.message);
-  }
-};
 
 export default Login;
 
@@ -203,8 +337,30 @@ const TextInput = styled.TextInput`
   margin-top: 20px;
 `;
 
+const ButtonView = styled.View`
+  background: #5263ff;
+  width: 295px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 10px 20px #c2cbff;
+`;
+
+const ButtonText = styled.Text`
+  color: white;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 20px;
+`;
+
 const Container = styled.View`
   flex: 1;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Text = styled.Text``;

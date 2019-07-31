@@ -15,13 +15,25 @@ import ModalLogin from "../components/ModalLogin";
 import firebase from "../components/Firebase";
 
 export default class HomeScreen extends React.Component {
+  static navigationOptions = {
+    headerLeft: (
+      <Button
+        //onPress={() => alert("This is a button!")}
+        title=""
+        color="#fff"
+      />
+    )
+  };
+  state = {
+    username: "User"
+  };
   render() {
     return (
       <Container>
         <SafeAreaView>
           <TitleBar>
             <Title>Welcome back,</Title>
-            <Name>Joe</Name>
+            <Name>{this.state.username}</Name>
           </TitleBar>
           <ScrollView
             horizontal={true}
@@ -52,12 +64,23 @@ export default class HomeScreen extends React.Component {
             ))}
           </ScrollView>
 
-          <SettingsButton title="Settings" />
+          <Button
+            onPress={() => {
+              this.props.navigation.push("Settings");
+            }}
+            title="Settings"
+          />
           <Button
             onPress={() => {
               this.props.navigation.push("Login");
             }}
             title="Login"
+          />
+          <Button
+            onPress={() => {
+              this.props.navigation.push("NewDrawing");
+            }}
+            title="New Drawing"
           />
         </SafeAreaView>
         {/* <ModalLogin /> */}
@@ -68,14 +91,19 @@ export default class HomeScreen extends React.Component {
   componentDidMount() {
     getLoginStatus().then(login => {
       if (login == null) {
-        this.props.navigation.push("Login");
+        this.setState({ login: "Null login" });
+      } else {
+        this.setState({ login: login });
       }
     });
-    // if (getLoginStatus() == null) {
-    //   this.props.navigation.push("Login");
-    // } else {
-    //   alert("login status " + getLoginStatus().value);
-    // }
+
+    getUsername().then(username => {
+      if (username == null) {
+        this.setState({ username: "Null username" });
+      } else {
+        this.setState({ username: username });
+      }
+    });
   }
 }
 
@@ -88,6 +116,17 @@ const getLoginStatus = async () => {
     console.log(error.message);
   }
   return login;
+};
+
+const getUsername = async () => {
+  var username = "";
+  try {
+    username = await AsyncStorage.getItem("username");
+  } catch (error) {
+    // Error retrieving data
+    console.log(error.message);
+  }
+  return username;
 };
 
 const cards = [
