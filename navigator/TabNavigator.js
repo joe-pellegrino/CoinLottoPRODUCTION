@@ -13,9 +13,8 @@ import FreeLottoHome from "../screens/FreeLottoHome";
 import AuthLoadingScreen from "./AuthLoading";
 import Settings from "../screens/Settings";
 import NewDrawing from "../screens/NewDrawing";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import styled from "styled-components";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/AntDesign";
 
 const activeColor = "#4775f2";
 const inactiveColor = "#b8bece";
@@ -50,7 +49,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
     tabBarLabel: "Home",
     tabBarIcon: ({ focused }) => (
       <Icon
-        name="ios-home"
+        name="home"
         size={26}
         color={focused ? activeColor : inactiveColor}
       />
@@ -71,7 +70,7 @@ SettingsStack.navigationOptions = ({ navigation }) => {
     tabBarLabel: "Settings",
     tabBarIcon: ({ focused }) => (
       <Icon
-        name="ios-home"
+        name="setting"
         size={26}
         color={focused ? activeColor : inactiveColor}
       />

@@ -25,7 +25,11 @@ class Settings extends React.Component {
     // )
   };
   state = {
-    error: "No error"
+    error: "No error",
+    firstname: "",
+    lastname: "",
+    mew: "",
+    deposit_address: ""
   };
   render() {
     return (
@@ -69,6 +73,10 @@ class Settings extends React.Component {
       this._removeToken(),
       this._removeStatus(),
       this._removeKeychain(),
+      this._removeFirstName(),
+      this._removeLastName(),
+      this._removeMEWAddress(),
+      this._removeDepositAddress(),
       this._showLoginScreen()
     ]);
   };
@@ -122,6 +130,42 @@ class Settings extends React.Component {
     } catch (error) {
       this.setState({ error: "token: " + error });
       // Error saving data
+    }
+  };
+
+  _removeFirstName = async () => {
+    try {
+      await AsyncStorage.removeItem("firstname");
+    } catch (error) {
+      // Error retrieving data
+      this.setState({ error: "remove status: " + error });
+    }
+  };
+
+  _removeLastName = async () => {
+    try {
+      await AsyncStorage.removeItem("lastname");
+    } catch (error) {
+      // Error retrieving data
+      this.setState({ error: "remove last name: " + error });
+    }
+  };
+
+  _removeDepositAddress = async () => {
+    try {
+      await AsyncStorage.removeItem("deposit_address");
+    } catch (error) {
+      // Error retrieving data
+      this.setState({ error: "remove deposit address: " + error });
+    }
+  };
+
+  _removeMEWAddress = async () => {
+    try {
+      await AsyncStorage.removeItem("mew");
+    } catch (error) {
+      // Error retrieving data
+      this.setState({ error: "remove mew: " + error });
     }
   };
 

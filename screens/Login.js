@@ -83,6 +83,10 @@ class Login extends React.Component {
       this._storeUsername(),
       this._storeToken(),
       this._storeLoginStatus(),
+      this._storeFirstName(),
+      this._storeLastName(),
+      this._storeDepositAddress(),
+      this._storeMEWAddress(),
       this._showHomeScreen()
     ]);
   };
@@ -111,6 +115,42 @@ class Login extends React.Component {
       await AsyncStorage.setItem("token", this.state.token);
     } catch (error) {
       this.setState({ error: "token: " + error });
+      // Error saving data
+    }
+  };
+
+  _storeFirstName = async () => {
+    try {
+      await AsyncStorage.setItem("firstname", this.state.firstname);
+    } catch (error) {
+      this.setState({ error: "firstname: " + error });
+      // Error saving data
+    }
+  };
+
+  _storeLastName = async () => {
+    try {
+      await AsyncStorage.setItem("lastname", this.state.lastname);
+    } catch (error) {
+      this.setState({ error: "lastname: " + error });
+      // Error saving data
+    }
+  };
+
+  _storeDepositAddress = async () => {
+    try {
+      await AsyncStorage.setItem("deposit_address", this.state.deposit_address);
+    } catch (error) {
+      this.setState({ error: "deposit_address: " + error });
+      // Error saving data
+    }
+  };
+
+  _storeMEWAddress = async () => {
+    try {
+      await AsyncStorage.setItem("mew", this.state.mew);
+    } catch (error) {
+      this.setState({ error: "mew: " + error });
       // Error saving data
     }
   };
@@ -148,6 +188,42 @@ class Login extends React.Component {
     } catch (error) {
       this.setState({ error: "token: " + error });
       // Error saving data
+    }
+  };
+
+  _removeFirstName = async () => {
+    try {
+      await AsyncStorage.removeItem("firstname");
+    } catch (error) {
+      // Error retrieving data
+      this.setState({ error: "remove status: " + error });
+    }
+  };
+
+  _removeLastName = async () => {
+    try {
+      await AsyncStorage.removeItem("lastname");
+    } catch (error) {
+      // Error retrieving data
+      this.setState({ error: "remove last name: " + error });
+    }
+  };
+
+  _removeDepositAddress = async () => {
+    try {
+      await AsyncStorage.removeItem("deposit_address");
+    } catch (error) {
+      // Error retrieving data
+      this.setState({ error: "remove deposit address: " + error });
+    }
+  };
+
+  _removeMEWAddress = async () => {
+    try {
+      await AsyncStorage.removeItem("mew");
+    } catch (error) {
+      // Error retrieving data
+      this.setState({ error: "remove mew: " + error });
     }
   };
 
