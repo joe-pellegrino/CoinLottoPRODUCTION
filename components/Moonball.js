@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Text, TouchableOpacity } from "react-native";
 
-const Ball = props => (
+const Moonball = props => (
   // <Container>
   //   <Content>
 
@@ -14,13 +14,13 @@ const Ball = props => (
   // </Container>
 );
 
-export default Ball;
+export default Moonball;
 
 const BallText = styled.Text`
   text-align: center;
   margin-top: 10px;
   margin-left: -1px;
-  color: white;
+  color: black;
 `;
 
 const PowerBallText = styled.Text`
@@ -32,10 +32,10 @@ const PowerBallText = styled.Text`
 const Dot = styled.View`
   height: 40px;
   width: 40px;
-  background-color: red;
+  background-color: white;
   border-radius: 50%;
   display: inline-block;
-  color: white;
+  color: black;
   border-style: solid;
   border-color: black;
   border-width: 1px;

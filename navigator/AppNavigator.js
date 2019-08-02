@@ -36,7 +36,8 @@
 import {
   createSwitchNavigator,
   createStackNavigator,
-  createAppContainer
+  createAppContainer,
+  createBottomTabNavigator
 } from "react-navigation";
 import LottoDetail from "../screens/LottoDetail";
 import HomeScreen from "../screens/HomeScreen";
@@ -46,6 +47,8 @@ import FreeLottoHome from "../screens/FreeLottoHome";
 import AuthLoadingScreen from "./AuthLoading";
 import Settings from "../screens/Settings";
 import NewDrawing from "../screens/NewDrawing";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import TabNavigator from "./TabNavigator";
 
 const AppStack = createStackNavigator({
   HomeScreen: HomeScreen,
@@ -56,6 +59,11 @@ const AppStack = createStackNavigator({
   Login: Login
 });
 
+// const TabNavigation = createBottomTabNavigator({
+//   HomeScreen: HomeStack,
+//   Settings: SettingsStack
+// });
+
 const AuthStack = createStackNavigator({
   Login: Login,
   HomeScreen: HomeScreen,
@@ -63,15 +71,49 @@ const AuthStack = createStackNavigator({
   Login: Login
 });
 
-export default createAppContainer(
-  createSwitchNavigator(
-    {
-      AuthLoading: AuthLoadingScreen,
-      App: AppStack,
-      Auth: AuthStack
-    },
-    {
-      initialRouteName: "AuthLoading"
-    }
-  )
-);
+const HomeStack = createStackNavigator({
+  HomeScreen: HomeScreen,
+  FreeLottoDrawingLive: FreeLottoDrawingLive,
+  FreeLottoHome: FreeLottoHome,
+  NewDrawing: NewDrawing,
+  Settings: Settings,
+  Login: Login
+});
+
+const SettingsStack = createStackNavigator({
+  Settings: Settings,
+  FreeLottoDrawingLive: FreeLottoDrawingLive,
+  FreeLottoHome: FreeLottoHome,
+  NewDrawing: NewDrawing,
+  Login: Login
+});
+
+HomeStack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 4) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible
+  };
+};
+
+export default createAppContainer(TabNavigator);
+
+// export default createAppContainer(
+//   createSwitchNavigator(
+//     {
+//       AuthLoading: AuthLoadingScreen,
+//       App: AppStack,
+//       // App: createBottomTabNavigator({
+//       //   Home: HomeStack,
+//       //   Settings: SettingsStack
+//       // }),
+//       Auth: AuthStack
+//     },
+//     {
+//       initialRouteName: "AuthLoading"
+//     }
+//   )
+// );

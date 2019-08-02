@@ -67,16 +67,17 @@ const Dot = styled.View`
 
 const Container = styled.View`
   background-color: white;
-  width: 315px;
+  width: 90%;
   height: 100px;
   border-radius: 14px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-  margin-left: 20px;
+  align-items: center;
+  margin-left: 15px;
   margin-top: 20px;
 `;
 
 const Content = styled.View`
-  padding-left: 20px;
+  padding-left: 15px;
   flex-direction: row;
   align-items: center;
   height: 80px;

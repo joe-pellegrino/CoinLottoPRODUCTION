@@ -2,12 +2,23 @@ import React from "react";
 import styled from "styled-components";
 import WebView from "react-native-webview";
 import firebase from "react-native-firebase";
-import { ScrollView, TouchableOpacity, View, Text } from "react-native";
+import {
+  ScrollView,
+  TouchableOpacity,
+  View,
+  Text,
+  TouchableHighlight
+} from "react-native";
 import Ball from "../components/Ball";
+import Moonball from "../components/Moonball";
+import Row from "../components/Row";
 
 let Analytics = firebase.analytics();
 
 export default class NewDrawing extends React.Component {
+  static navigationOptions = {
+    title: "New Drawing"
+  };
   constructor() {
     super();
     Analytics.setAnalyticsCollectionEnabled(true);
@@ -16,15 +27,45 @@ export default class NewDrawing extends React.Component {
     });
   }
   state = {
-    number: "0"
+    error: "",
+    number1: "",
+    number2: "",
+    number3: "",
+    number4: "",
+    number5: "",
+    moonball: ""
   };
+
+  inputRefs = [];
+
+  setRef = ref => {
+    this.inputRefs.push(ref);
+  };
+
+  focusInput = number => this.inputRefs[number].focus();
+
   render() {
     return (
       <Container>
-        <TitleBar>
-          <Title>New Drawing</Title>
-        </TitleBar>
-        <Text>Number: {this.state.number}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.push("FreeLottoDrawingLive");
+          }}
+        >
+          <Row
+            number1={this.state.number1}
+            number2={this.state.number2}
+            number3={this.state.number3}
+            number4={this.state.number4}
+            number5={this.state.number5}
+            power={this.state.moonball}
+          />
+        </TouchableOpacity>
+        {/* <Text>Number: {this.state.number1}</Text>
+        <Text>Number: {this.state.number2}</Text>
+        <Text>Number: {this.state.number3}</Text>
+        <Text>Number: {this.state.number4}</Text>
+        <Text>Number: {this.state.number5}</Text> */}
         <ScrollView
           //horizontal={false}
           style={{ paddingBottom: 30 }}
@@ -42,55 +83,90 @@ export default class NewDrawing extends React.Component {
           ))} */}
           <View
             style={{
-              alignItems: "center"
+              alignItems: "center",
+              flexDirection: "row",
+              flexWrap: "wrap",
+              width: "80%",
+              flex: 1,
+              //justifyContent: "space-around",
+              padding: 5,
+              alignSelf: "center"
             }}
           >
-            <BallRow>
-              <Ball
-                number="1"
-                parentFunction={this.numberSelect(this.state.number)}
-              />
-              <Ball number="2" />
-              <Ball number="3" />
-              <Ball number="4" />
-              <Ball number="5" />
-            </BallRow>
-            <BallRow>
-              <Ball number="6" />
-              <Ball number="7" />
-              <Ball number="8" />
-              <Ball number="9" />
-              <Ball number="10" />
-            </BallRow>
-            <BallRow>
-              <Ball number="11" />
-              <Ball number="12" />
-              <Ball number="13" />
-              <Ball number="14" />
-              <Ball number="15" />
-            </BallRow>
-            <BallRow>
-              <Ball number="16" />
-              <Ball number="17" />
-              <Ball number="18" />
-              <Ball number="19" />
-              <Ball number="20" />
-            </BallRow>
-            <BallRow>
-              <Ball number="21" />
-              <Ball number="22" />
-              <Ball number="23" />
-              <Ball number="24" />
-              <Ball number="25" />
-            </BallRow>
+            {Array.from({ length: 71 }, (item, index) => {
+              if (index != 0) {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.numberSelect(index);
+                    }}
+                  >
+                    <Ball
+                      id={index}
+                      ref={this.setRef}
+                      number={index}
+                      opacity="1"
+                    />
+                  </TouchableOpacity>
+                );
+              }
+            })}
+
+            {Array.from({ length: 21 }, (item, indexMB) => {
+              if (indexMB != 0) {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.numberSelectPower(indexMB);
+                    }}
+                  >
+                    <Moonball number={indexMB} opacity="1" />
+                  </TouchableOpacity>
+                );
+              }
+            })}
           </View>
         </ScrollView>
       </Container>
     );
   }
 
+  numberSelectPower(number) {
+    if (this.state.moonball == "") {
+      this.setState({ moonball: number });
+      return;
+    }
+  }
+
   numberSelect(number) {
-    this.setState({ number: number });
+    // this.refs.number.setNativeProps({
+    //   opacity: 0
+    // });
+
+    this.focusInput;
+
+    this.setState({ error: this.inputRefs });
+
+    if (this.state.number1 == "") {
+      this.setState({ number1: number });
+      return;
+    }
+    if (this.state.number2 == "") {
+      this.setState({ number2: number });
+      return;
+    }
+    if (this.state.number3 == "") {
+      this.setState({ number3: number });
+      return;
+    }
+    if (this.state.number4 == "") {
+      this.setState({ number4: number });
+      return;
+    }
+    if (this.state.number5 == "") {
+      this.setState({ number5: number });
+      return;
+    }
   }
 }
 

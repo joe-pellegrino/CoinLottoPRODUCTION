@@ -16,6 +16,7 @@ import firebase from "../components/Firebase";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
+    title: "Dashboard",
     headerLeft: (
       <Button
         //onPress={() => alert("This is a button!")}

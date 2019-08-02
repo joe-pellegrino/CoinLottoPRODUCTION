@@ -16,6 +16,8 @@ pod 'Firebase/DynamicLinks'
 
 #  pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'CoinLottoNewTestTests' do
     inherit! :search_paths
     # Pods for testing

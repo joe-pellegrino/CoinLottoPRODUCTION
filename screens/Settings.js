@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, AsyncStorage } from "react-native";
+import { TouchableOpacity, AsyncStorage, Button } from "react-native";
 import styled from "styled-components";
 import * as Keychain from "react-native-keychain";
 import { Dialog, ConfirmDialog } from "react-native-simple-dialogs";
@@ -14,6 +14,16 @@ const ACCESS_CONTROL_MAP = [
 ];
 
 class Settings extends React.Component {
+  static navigationOptions = {
+    title: "Settings"
+    // headerLeft: (
+    //   <Button
+    //     //onPress={() => alert("This is a button!")}
+    //     title=""
+    //     color="#fff"
+    //   />
+    // )
+  };
   state = {
     error: "No error"
   };
