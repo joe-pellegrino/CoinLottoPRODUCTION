@@ -31,7 +31,11 @@ class Login extends React.Component {
     username: "",
     token: "",
     email: "",
-    password: ""
+    password: "",
+    firstname: "",
+    lastname: "",
+    deposit_address: "",
+    mew: ""
   };
   // constructor(props) {
   //   super(props);
@@ -356,6 +360,10 @@ class Login extends React.Component {
 
             var username = response.data.message.username;
             var token = response.data.message.token;
+            var firstname = response.data.message.firstname;
+            var lastname = response.data.message.lastname;
+            var mew = response.data.message.mew;
+            var deposit_address = response.data.message.deposit_address;
 
             thisObj.setState({
               username: username
@@ -363,6 +371,22 @@ class Login extends React.Component {
 
             thisObj.setState({
               token: token
+            });
+
+            thisObj.setState({
+              firstname: firstname
+            });
+
+            thisObj.setState({
+              lastname: lastname
+            });
+
+            thisObj.setState({
+              deposit_address: deposit_address
+            });
+
+            thisObj.setState({
+              mew: mew
             });
 
             thisObj._setStorage();

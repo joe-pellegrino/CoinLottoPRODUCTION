@@ -35,7 +35,10 @@ class Settings extends React.Component {
     return (
       <Container>
         <Text>{this.state.error}</Text>
-
+        <Text>{this.state.firstname}</Text>
+        <Text>{this.state.lastname}</Text>
+        <Text>{this.state.mew}</Text>
+        <Text>{this.state.deposit_address}</Text>
         <TouchableOpacity onPress={this.logout}>
           <ButtonView>
             <ButtonText>Logout</ButtonText>
@@ -58,6 +61,43 @@ class Settings extends React.Component {
       </Container>
     );
   }
+
+  componentDidMount() {
+    try {
+      getFirstName().then(firstname => {
+        if (firstname == null) {
+          this.setState({ firstname: "Null login" });
+        } else {
+          this.setState({ firstname: firstname });
+        }
+      });
+    } catch (err) {
+      this.setState({ error: err });
+    }
+
+    try {
+      getLastName().then(lastname => {
+        if (lastname == null) {
+          this.setState({ lastname: "Null login" });
+        } else {
+          this.setState({ lastname: lastname });
+        }
+      });
+    } catch (err) {
+      this.setState({ error: err });
+    }
+  }
+
+  // const getLastName = async () => {
+  //   var lastname = "";
+  //   try {
+  //     username = await AsyncStorage.getItem("lastname");
+  //   } catch (error) {
+  //     // Error retrieving data
+  //     console.log(error.message);
+  //   }
+  //   return lastname;
+  // };
 
   logout = () => {
     this.setState({ dialogVisible: true });
@@ -96,8 +136,8 @@ class Settings extends React.Component {
   _showLoginScreen = async () => {
     try {
       // await this.props.navigation.push("Login");
-
       //this.props.navigation.popToTop();
+
       this.props.navigation.navigate("Login", {
         leftButtons: [
           {
@@ -180,10 +220,34 @@ class Settings extends React.Component {
   };
 }
 
+const getFirstName = async () => {
+  var firstname = "first name";
+  try {
+    firstname = await AsyncStorage.getItem("firstname");
+  } catch (error) {
+    // Error retrieving data
+
+    this.setState({ error: "login: " + error });
+  }
+  return firstname;
+};
+
+const getLastName = async () => {
+  var lastname = "last name";
+  try {
+    lastname = await AsyncStorage.getItem("lastname");
+  } catch (error) {
+    // Error retrieving data
+    this.setState({ error: "login: " + error });
+  }
+  return lastname;
+};
+
 export default Settings;
 
 const Container = styled.View`
   flex: 1;
+  align-items: center;
 `;
 
 const ButtonView = styled.View`

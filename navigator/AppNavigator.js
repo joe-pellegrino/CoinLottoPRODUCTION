@@ -49,6 +49,7 @@ import Settings from "../screens/Settings";
 import NewDrawing from "../screens/NewDrawing";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import TabNavigator from "./TabNavigator";
+import OnBoard from "../screens/OnBoard";
 
 const AppStack = createStackNavigator({
   HomeScreen: HomeScreen,
@@ -99,21 +100,22 @@ HomeStack.navigationOptions = ({ navigation }) => {
   };
 };
 
-export default createAppContainer(TabNavigator);
+//export default createAppContainer(TabNavigator);
 
-// export default createAppContainer(
-//   createSwitchNavigator(
-//     {
-//       AuthLoading: AuthLoadingScreen,
-//       App: AppStack,
-//       // App: createBottomTabNavigator({
-//       //   Home: HomeStack,
-//       //   Settings: SettingsStack
-//       // }),
-//       Auth: AuthStack
-//     },
-//     {
-//       initialRouteName: "AuthLoading"
-//     }
-//   )
-// );
+export default createAppContainer(
+  createSwitchNavigator(
+    {
+      AuthLoading: AuthLoadingScreen,
+      App: TabNavigator,
+      OnBoard: OnBoard,
+      // App: createBottomTabNavigator({
+      //   Home: HomeStack,
+      //   Settings: SettingsStack
+      // }),
+      Auth: AuthStack
+    },
+    {
+      initialRouteName: "AuthLoading"
+    }
+  )
+);

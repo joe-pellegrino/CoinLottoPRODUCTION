@@ -26,7 +26,8 @@ export default class HomeScreen extends React.Component {
     )
   };
   state = {
-    username: "User"
+    username: "User",
+    firstname: ""
   };
   render() {
     return (
@@ -34,7 +35,7 @@ export default class HomeScreen extends React.Component {
         <SafeAreaView>
           <TitleBar>
             <Title>Welcome back,</Title>
-            <Name>{this.state.username}</Name>
+            <Name>{this.state.firstname}</Name>
           </TitleBar>
           <ScrollView
             horizontal={true}
@@ -90,6 +91,18 @@ export default class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
+    try {
+      getFirstName().then(firstname => {
+        if (firstname == null) {
+          this.setState({ firstname: "Null login" });
+        } else {
+          this.setState({ firstname: toTitleCase(firstname) });
+        }
+      });
+    } catch (err) {
+      this.setState({ error: err });
+    }
+
     getLoginStatus().then(login => {
       if (login == null) {
         this.setState({ login: "Null login" });
@@ -107,6 +120,24 @@ export default class HomeScreen extends React.Component {
     });
   }
 }
+
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function(txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
+const getFirstName = async () => {
+  var firstname = "first name";
+  try {
+    firstname = await AsyncStorage.getItem("firstname");
+  } catch (error) {
+    // Error retrieving data
+
+    this.setState({ error: "login: " + error });
+  }
+  return firstname;
+};
 
 const getLoginStatus = async () => {
   var login = "false";
